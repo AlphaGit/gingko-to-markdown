@@ -3,26 +3,32 @@
 var username = process.env['USERNAME'];
 var password = process.env['PASSWORD'];
 
-console.log('username', username);
-console.log('password', password);
-// argv[0] will be node
-// argv[1] will be this script
+// argv[0] will be node, argv[1] will be this script
 var treeId = process.argv[2];
-console.log('tree id', treeId);
-var outputDir = process.argv[3];
+var outputDirPath = process.argv[3];
 
-var https = require('https');
+var gingkoExporter = require('./gingko-exporter');
+var jsonToFileExporter = require('./json-to-file-exporter');
 
-var treeExportUrl = 'https://' + username + ':' + password + '@gingkoapp.com/api/export/' + treeId + '.json';
+exportFromGingko()
+	.then(stringToJson)
+	.then(dumpJsonToFiles)
+	.catch(showError);
 
-https.get(treeExportUrl, function(response) {
-	var responseBody = '';
-	response.on('data', function(d) {
-		responseBody += d;
-	});
-	response.on('end', function() {
-		console.log(responseBody);
-	});
-}).on('error', function(error) {
+// each of the steps implementations follow below //
+
+function exportFromGingko() {
+	return gingkoExporter.exportTree(treeId, username, password);
+}
+
+function stringToJson(text) {
+	return JSON.parse(text);
+}
+
+function dumpJsonToFiles(jsonObject) {
+	return jsonToFileExporter.dumpJson(jsonObject, outputDirPath);
+}
+
+function showError(error) {
 	console.error(error);
-});
+}

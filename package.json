@@ -1,0 +1,29 @@
+{
+  "name": "gingko-to-markdown",
+  "version": "1.0.0",
+  "description": "Downloads a GingkoApp tree and converts it to a bunch of markdown files",
+  "main": "gingko-to-markdown.js",
+  "dependencies": {
+    "q": "^1.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlphaGit/gingko-to-markdown.git"
+  },
+  "keywords": [
+    "markdown",
+    "gingkoapp",
+    "formatter",
+    "converter"
+  ],
+  "author": "Alpha",
+  "license": "CC BY-NC-SA 4.0",
+  "bugs": {
+    "url": "https://github.com/AlphaGit/gingko-to-markdown/issues"
+  },
+  "homepage": "https://github.com/AlphaGit/gingko-to-markdown#readme"
+}
