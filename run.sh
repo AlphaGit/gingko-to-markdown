@@ -4,6 +4,6 @@
 OUTPUT_DIR="$2"
 TREE_ID="$1"
 
-rm -rf $OUTPUT_DIR
+rm -rf $OUTPUT_DIR/*
 source loadCredentials.sh
 node gingko-to-markdown.js $TREE_ID $OUTPUT_DIR

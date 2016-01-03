@@ -11,7 +11,8 @@ function initiateDump(jsonObject, outputDir) {
 	var deferred = Q.defer();
 
 	fs.mkdir(outputDir, function (err) {
-		if (err) {
+		// we don't care if the directory already exists
+		if (err && err.code !== 'EEXIST') {
 			deferred.reject(err);
 		} else {
 			deferred.resolve(dumpJsonForArray(jsonObject, outputDir, '', 1));
