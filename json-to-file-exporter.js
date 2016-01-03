@@ -40,7 +40,7 @@ function dumpJsonForObject(jsonObject, outputDir, levelPrefix, levelItemNumber) 
 	} 
 
 	// recursively call this function for each of the children for this node
-	var childrenPromises = dumpJsonForArray(jsonObject.children, outputDir, levelPrefix + levelItemNumber + '.');
+	var childrenPromises = dumpJsonForArray(jsonObject.children, outputDir, levelPrefix + levelItemNumber + '.', 1);
 	promisesToWaitFor = promisesToWaitFor.concat(childrenPromises);
 
 	return Q.all(promisesToWaitFor);
@@ -58,7 +58,7 @@ function writeFile(content, outputDir, fullLevelNumber) {
 	return qWriteFile(outputDir + '/' + fileName, content);
 }
 
-var invalidCharactersMatcher = /[\?#\\]/g;
+var invalidCharactersMatcher = /[\?#\\/]/g;
 function stripNonValidCharacterForFiles(fileName) {
 	return fileName.replace(invalidCharactersMatcher, '');
 }
