@@ -13,19 +13,25 @@ var jsonToFileExporter = require('./json-to-file-exporter');
 exportFromGingko()
 	.then(stringToJson)
 	.then(dumpJsonToFiles)
+	.then(function() {
+		console.log('Done!');
+	})
 	.catch(showError);
 
 // each of the steps implementations follow below //
 
 function exportFromGingko() {
+	console.log('Exporting tree from Gingko...');
 	return gingkoExporter.exportTree(treeId, username, password);
 }
 
 function stringToJson(text) {
+	console.log('Parsing result...');
 	return JSON.parse(text);
 }
 
 function dumpJsonToFiles(jsonObject) {
+	console.log('Dumping to files...');
 	return jsonToFileExporter.dumpJson(jsonObject, outputDirPath);
 }
 
