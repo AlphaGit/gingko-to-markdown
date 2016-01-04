@@ -2,7 +2,7 @@
 
 module.exports = tagsToLinks;
 
-var TAG_REGEX = /#\S+/g;
+var TAG_REGEX = /#[^\s#]+/g;
 
 function tagsToLinks(content, options) {
 	throw 'Not supported';
