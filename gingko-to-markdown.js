@@ -9,11 +9,15 @@ if (options.help) {
 
 validateCommandLineArguments(options);
 
-var gingkoExporter = require('exporter/gingko-exporter');
-var jsonToFileExporter = require('exporter/json-to-file-exporter');
+var gingkoExporter = require('./exporter/gingko-exporter');
+var jsonToFileExporter = require('./exporter/json-to-file-exporter');
+var postProcessor = require('./post-processing');
+
+postProcessor.loadPostProcessing(options);
 
 exportFromGingko()
 	.then(stringToJson)
+	.then(postProcess)
 	.then(dumpJsonToFiles)
 	.then(function() {
 		console.log('Done!');
@@ -41,6 +45,7 @@ function showError(error) {
 	console.error(error);
 }
 
+// --------------------------------------------------------------------------
 // command line processing
 var commandLine = null;
 function ensureCommandLine() {
@@ -70,4 +75,8 @@ function showCommandLineUsage() {
 	ensureCommandLine();
 	commandLine.showUsage();
 	process.exit(0);
+}
+
+function postProcess(jsonObject) {
+	return postProcessor.postProcess(jsonObject, options);
 }

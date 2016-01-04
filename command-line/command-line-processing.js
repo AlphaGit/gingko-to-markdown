@@ -29,6 +29,14 @@ var cli = commandLineArguments([
 		type: String,
 		description: 'Gingko password.'
 	}, {
+		name: 'processTags',
+		alias: 'r',
+		type: TagsProcessingOptionsDefinition,
+		typeLabel: '{strip}',
+		defaultValue: 'strip',
+		description: 'How to process tags found in document:\n' +
+			'strip removes them altogether.\n'
+	}, {
 		name: 'help',
 		alias: 'h',
 		type: Boolean,
