@@ -32,10 +32,11 @@ var cli = commandLineArguments([
 		name: 'processTags',
 		alias: 'r',
 		type: TagsProcessingOptionsDefinition,
-		typeLabel: '{strip}',
+		typeLabel: '{strip|link}',
 		defaultValue: 'strip',
 		description: 'How to process tags found in document:\n' +
-			'strip removes them altogether.\n'
+			'strip removes them altogether.\n' +
+			'link converts them to links to the Gingko tree.'
 	}, {
 		name: 'help',
 		alias: 'h',
