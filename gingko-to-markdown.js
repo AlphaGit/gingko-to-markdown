@@ -9,8 +9,8 @@ if (options.help) {
 
 validateCommandLineArguments(options);
 
-var gingkoExporter = require('./gingko-exporter');
-var jsonToFileExporter = require('./json-to-file-exporter');
+var gingkoExporter = require('exporter/gingko-exporter');
+var jsonToFileExporter = require('exporter/json-to-file-exporter');
 
 exportFromGingko()
 	.then(stringToJson)
