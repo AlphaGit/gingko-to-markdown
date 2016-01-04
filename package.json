@@ -4,6 +4,7 @@
   "description": "Downloads a GingkoApp tree and converts it to a bunch of markdown files",
   "main": "gingko-to-markdown.js",
   "dependencies": {
+    "command-line-args": "^2.1.4",
     "q": "^1.4.1"
   },
   "devDependencies": {},

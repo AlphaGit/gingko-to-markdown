@@ -31,5 +31,24 @@ PASSWORD="yourpassword"
 
 Alternatively, you can modify the `loadCredentials.sh` file so that your credentials are loaded automatically.
 
+As a third alternative:
+
+```console
+node gingko-exporter.js -t <treeId> -o <outputDirectory> -u <username> -p <password>
+```
+
+### Parameters:
+
+```console
+-t, --treeId string              Gingko tree ID to export.
+-o, --outputDir dir              Output directory for markdown files.
+-u, --username string            Gingko username.
+-p, --password string            Gingko password.
+-r, --processTags {strip|link}   How to process tags found in document:
+                                 strip removes them altogether.
+                                 link converts them to links to the Gingko tree.
+-h, --help                       Shows this help.
+```
+
 If you want an example of the output it generates, you can check my repository [Building git](https://github.com/AlphaGit/building-git).
 

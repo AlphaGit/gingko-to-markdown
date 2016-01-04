@@ -1,11 +1,13 @@
 'use strict';
 
-var username = process.env['USERNAME'];
-var password = process.env['PASSWORD'];
+var options = parseCommandLineArguments();
 
-// argv[0] will be node, argv[1] will be this script
-var treeId = process.argv[2];
-var outputDirPath = process.argv[3];
+if (options.help) {
+	showCommandLineUsage();
+	process.exit(0);
+}
+
+validateCommandLineArguments(options);
 
 var gingkoExporter = require('./gingko-exporter');
 var jsonToFileExporter = require('./json-to-file-exporter');
@@ -22,7 +24,7 @@ exportFromGingko()
 
 function exportFromGingko() {
 	console.log('Exporting tree from Gingko...');
-	return gingkoExporter.exportTree(treeId, username, password);
+	return gingkoExporter.exportTree(options.treeId, options.username, options.password);
 }
 
 function stringToJson(text) {
@@ -32,9 +34,40 @@ function stringToJson(text) {
 
 function dumpJsonToFiles(jsonObject) {
 	console.log('Dumping to files...');
-	return jsonToFileExporter.dumpJson(jsonObject, outputDirPath);
+	return jsonToFileExporter.dumpJson(jsonObject, options.outputDir);
 }
 
 function showError(error) {
 	console.error(error);
+}
+
+// command line processing
+var commandLine = null;
+function ensureCommandLine() {
+	if (!commandLine) {
+		commandLine = require('./command-line/command-line-processing');
+	}
+}
+
+function parseCommandLineArguments() {
+	ensureCommandLine();
+	return commandLine.parse();
+}
+
+function validateCommandLineArguments(options) {
+	ensureCommandLine();
+	var errors = commandLine.validate(options);
+
+	if (errors.length) {
+		for (var i = 0; i < errors.length; i++) {
+			console.error(errors[i]);
+		}
+		process.exit(1);
+	}
+}
+
+function showCommandLineUsage() {
+	ensureCommandLine();
+	commandLine.showUsage();
+	process.exit(0);
 }
