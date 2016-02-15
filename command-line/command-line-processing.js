@@ -32,10 +32,11 @@ var cli = commandLineArguments([
 		name: 'processTags',
 		alias: 'r',
 		type: TagsProcessingOptionsDefinition,
-		typeLabel: '{strip}',
+		typeLabel: '{strip|index}',
 		defaultValue: 'strip',
 		description: 'How to process tags found in document:\n' +
-			'strip removes them altogether.\n'
+			'"strip" removes them altogether.\n' +
+			'"index" creates an index page linking to the corresponding files.'
 	}, {
 		name: 'help',
 		alias: 'h',

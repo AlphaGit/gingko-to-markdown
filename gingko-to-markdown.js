@@ -10,15 +10,14 @@ if (options.help) {
 validateCommandLineArguments(options);
 
 var gingkoExporter = require('./exporter/gingko-exporter');
-var jsonToFileExporter = require('./exporter/json-to-file-exporter');
-var postProcessor = require('./post-processing');
-
-postProcessor.loadPostProcessing(options);
+var processingSteps = require('./processing-steps');
 
 exportFromGingko()
 	.then(stringToJson)
-	.then(postProcess)
-	.then(dumpJsonToFiles)
+	.then(function(documentTree) {
+		processingSteps.processContent(documentTree, options);
+		return;
+	})
 	.then(function() {
 		console.log('Done!');
 	})
@@ -34,11 +33,6 @@ function exportFromGingko() {
 function stringToJson(text) {
 	console.log('Parsing result...');
 	return JSON.parse(text);
-}
-
-function dumpJsonToFiles(jsonObject) {
-	console.log('Dumping to files...');
-	return jsonToFileExporter.dumpJson(jsonObject, options.outputDir);
 }
 
 function showError(error) {

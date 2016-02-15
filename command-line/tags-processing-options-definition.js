@@ -2,7 +2,7 @@
 
 module.exports = TagsProcessingOptionsDefinition;
 
-var ALLOWED_VALUES = ['strip', 'link'];
+var ALLOWED_VALUES = ['strip', 'index'];
 
 function TagsProcessingOptionsDefinition(value) {
 	if (!(this instanceof TagsProcessingOptionsDefinition)) return new TagsProcessingOptionsDefinition(value);

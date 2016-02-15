@@ -5,6 +5,7 @@
   "main": "gingko-to-markdown.js",
   "dependencies": {
     "command-line-args": "^2.1.4",
+    "lodash": "^4.3.0",
     "q": "^1.4.1"
   },
   "devDependencies": {},
