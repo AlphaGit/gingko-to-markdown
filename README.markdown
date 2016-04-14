@@ -14,10 +14,10 @@ I am using it myself and I wanted to have my updates being exported and uploaded
 - Configurable username and password through ENV variables
 - Configurable output directory
 - Automatically creates an index from tags
+- Tables of contents for Gitbook publications (SUMMARY.md)
 
 ## Roadmap
 
-- Tables of contents
 - Downloading images from the web
 - A few replacement macros maybe? Not sure...
 
@@ -45,11 +45,21 @@ node gingko-to-markdown.js -t <treeId> -o <outputDirectory> -u <username> -p <pa
   -o, --outputDir dir               Output directory for markdown files.
   -u, --username string             Gingko username.
   -p, --password string             Gingko password.
-  -r, --processTags {strip|index}   How to process tags found in document:
-                                    "strip" removes them altogether.
-                                    "index" creates an index page linking to the corresponding files.
+  --postProcessing                  Optional value that can be repeated for each post-processing step.
+                                    Order is respected and important.
+                                    - "strip-tags" removes tags from the texts.
+                                    - "index-tags" creates an index page linking to the corresponding files.
+                                    - "gitbook-summary" creates the required SUMMARY.md for GitBook publications.
   -h, --help                        Shows this help.
 ```
 
-If you want an example of the output it generates, you can check my repository [Building git](https://github.com/AlphaGit/building-git).
+If you want an example of the output it generates, you can check my repository [Building git](https://github.com/AlphaGit/building-git). It is generated with this command:
 
+```console
+rm -rf ./output/*
+
+node gingko-to-markdown.js -t <myTreeId> -o ./output -u <myUserName> -p <myPassword> \
+  --postProcessing=index-tags \
+  --postProcessing=strip-tags \
+  --postProcessing=gitbook-summary
+```

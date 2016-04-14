@@ -8,6 +8,8 @@ module.exports = indexTags;
 var _ = require('lodash');
 var forEachTreeNode = require('./util/for-each-tree-node');
 var removeDiacritics = require('./util/remove-diacritics');
+var getNewItemLevelItemNumber = require('./util/get-new-item-level-item-number');
+var generateMarkdownLinkForFileName = require('./util/generate-markdown-link-for-filename');
 
 var TAG_REGEX = /#[^\s#]+/g;
 
@@ -28,24 +30,13 @@ function indexTags(documentTree/*, options*/) {
 		});
 	});
 
-	var newItemNumber = getIndexLevelItemNumber(documentTree);
-	
+	var newItemNumber = getNewItemLevelItemNumber(documentTree);
+
 	documentTree.push({
 		itemNumber: newItemNumber,
 		fileName: newItemNumber + '-Index.markdown',
 		content: generateIndexContent(index)
 	});
-}
-
-function getIndexLevelItemNumber(documentTree) {
-	var lastItemNumber = documentTree[documentTree.length - 1].itemNumber;
-	var itemNumberParts = lastItemNumber.split('.');
-
-	var lastItemNumberPartIndex = itemNumberParts.length - 1;
-	var lastItemNumberPart = itemNumberParts[lastItemNumberPartIndex];
-	itemNumberParts[lastItemNumberPartIndex] = (+lastItemNumberPart) + 1;
-	
-	return itemNumberParts.join('.');
 }
 
 function generateIndexContent(index) {
@@ -80,8 +71,4 @@ function generateIndexContent(index) {
 	}
 
 	return contentString;
-}
-
-function generateMarkdownLinkForFileName(fileName) {
-	return '[' + fileName.split('.markdown')[0] + '](' + fileName + ')';
 }

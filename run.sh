@@ -8,4 +8,5 @@ rm -rf $OUTPUT_DIR/*
 source loadCredentials.sh
 node gingko-to-markdown.js -t $TREE_ID -o $OUTPUT_DIR -u $USERNAME -p $PASSWORD "$@" \
   --postProcessing=index-tags \
-  --postProcessing=strip-tags
+  --postProcessing=strip-tags \
+  --postProcessing=gitbook-summary

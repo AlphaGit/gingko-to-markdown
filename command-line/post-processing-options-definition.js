@@ -3,7 +3,7 @@
 module.exports = PostProcessingOptionsDefinition;
 
 // TODO read post-processing steps and load list of files
-var ALLOWED_VALUES = ['strip-tags', 'index-tags'];
+var ALLOWED_VALUES = ['strip-tags', 'index-tags', 'gitbook-summary'];
 
 function PostProcessingOptionsDefinition(value) {
 	if (!(this instanceof PostProcessingOptionsDefinition)) return new PostProcessingOptionsDefinition(value);
