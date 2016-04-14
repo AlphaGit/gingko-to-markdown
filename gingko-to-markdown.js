@@ -16,7 +16,6 @@ exportFromGingko()
 	.then(stringToJson)
 	.then(function(documentTree) {
 		processingSteps.processContent(documentTree, options);
-		return;
 	})
 	.then(function() {
 		console.log('Done!');

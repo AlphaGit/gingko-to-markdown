@@ -23,12 +23,11 @@ function loadProcessingFunctions(content, options) {
 	processingFunctions.push(require('./determine-file-names'));
 
 	// load user requested processing options
+	var postProcessingRequired = (options.postProcessing || []).map(function(p) { return p.value });
 
-	if (options.processTags.value == 'strip')
-		processingFunctions.push(require('./strip-tags'));
-
-	if (options.processTags.value == 'index')
-		processingFunctions.push(require('./tags-to-index'));
+	postProcessingRequired.forEach(function(p) {
+		processingFunctions.push(require('./' + p));
+	});
 
 	// load processing required at last
 	processingFunctions.push(require('./disk-writer'));

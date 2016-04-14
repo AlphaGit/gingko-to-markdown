@@ -4,7 +4,7 @@ module.exports = {
 	showUsage: showUsage
 };
 
-var TagsProcessingOptionsDefinition = require('./tags-processing-options-definition');
+var PostProcessingOptionsDefinition = require('./post-processing-options-definition');
 var commandLineArguments = require('command-line-args');
 var cli = commandLineArguments([
 	{ 
@@ -29,14 +29,10 @@ var cli = commandLineArguments([
 		type: String,
 		description: 'Gingko password.'
 	}, {
-		name: 'processTags',
-		alias: 'r',
-		type: TagsProcessingOptionsDefinition,
-		typeLabel: '{strip|index}',
-		defaultValue: 'strip',
-		description: 'How to process tags found in document:\n' +
-			'"strip" removes them altogether.\n' +
-			'"index" creates an index page linking to the corresponding files.'
+		name: 'postProcessing',
+		type: PostProcessingOptionsDefinition,
+		description: 'Post processing option names to apply.',
+		multiple: true
 	}, {
 		name: 'help',
 		alias: 'h',
