@@ -3,16 +3,18 @@
 module.exports = {
 	processContent: initiateProcessingSteps
 };
+var Q = require('q');
 
 function initiateProcessingSteps(content, options) {
 	var processingFunctions = loadProcessingFunctions(content, options);
 
+	var promises = [];
 	for (var i = 0; i < processingFunctions.length; i++) {
 		var ppFunction = processingFunctions[i];
-		ppFunction(content, options);
+		promises.push(ppFunction(content, options));
 	}
 
-	return content;
+	return Q.all(promises);
 }
 
 function loadProcessingFunctions(content, options) {

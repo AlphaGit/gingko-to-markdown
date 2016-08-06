@@ -3,7 +3,7 @@
 // depends on: ./determine-level-numbers to have run first
 
 module.exports = determineFileNames;
-
+var Q = require('q');
 var forEachTreeNode = require('./util/for-each-tree-node');
 
 function determineFileNames(documentTree, options) {
@@ -12,8 +12,10 @@ function determineFileNames(documentTree, options) {
 
 		var firstLine = treeNode.content.split('\n')[0];
 		var fileName = treeNode.itemNumber + '-' + firstLine + '.markdown';
-		treeNode.fileName = stripNonValidCharacterForFiles(fileName);
+
+		treeNode.fileName = options.bookOutput + '/' + stripNonValidCharacterForFiles(fileName);
 	});
+	return Q();
 };
 
 var invalidCharactersMatcher = /[\?#\\/]/g;

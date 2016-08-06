@@ -9,25 +9,34 @@ var forEachTreeNode = require('./util/for-each-tree-node');
 function initiateDump(jsonObject, options) {
 	var deferred = Q.defer();
 
-	fs.mkdir(options.outputDir, function (err) {
+	fs.mkdir(options.rootOutput, function (err) {
 		// we don't care if the directory already exists
 		if (err && err.code !== 'EEXIST') {
 			deferred.reject(err);
-		} else {
-			deferred.resolve(dumpJsonForArray(jsonObject, options.outputDir));
+			return;
 		}
-	})
+		
+		fs.mkdir(options.bookOutput, function (err) {
+			// we don't care if the directory already exists
+			if (err && err.code !== 'EEXIST') {
+				deferred.reject(err);
+				return;
+			}
+
+			deferred.resolve(dumpJsonForArray(jsonObject));
+		});
+	});
 
 	return deferred.promise;
 }
 
-function dumpJsonForArray(jsonObject, outputDir) {
+function dumpJsonForArray(jsonObject) {
 	var promisesToWaitFor = [];
 
 	forEachTreeNode(jsonObject, function(treeNode) {
 		if (!treeNode.fileName || !treeNode.content) return;
 
-		promisesToWaitFor.push(writeFile(treeNode.fileName, treeNode.content, outputDir));
+		promisesToWaitFor.push(writeFile(treeNode.fileName, treeNode.content));
 	});
 
 	return Q.all(promisesToWaitFor);
@@ -37,5 +46,5 @@ var qWriteFile = Q.nfbind(fs.writeFile);
 function writeFile(fileName, content, outputDir) {
 	// dump contents to file name in outputDir
 	console.log('Writing to ' + fileName);
-	return qWriteFile(outputDir + '/' + fileName, content);
+	return qWriteFile(fileName, content);
 }

@@ -35,14 +35,18 @@ Alternatively, you can modify the `loadCredentials.sh` file so that your credent
 As a third alternative:
 
 ```console
-node gingko-to-markdown.js -t <treeId> -o <outputDirectory> -u <username> -p <password>
+node gingko-to-markdown.js -t <treeId> \
+    --rootOutput <outputDirectory> \
+    --bookOutput <bookOutputDirectory> \
+    -u <username> -p <password>
 ```
 
 ### Parameters:
 
 ```console
   -t, --treeId string               Gingko tree ID to export.
-  -o, --outputDir dir               Output directory for markdown files.
+  --outputDir dir                   Output directory for all files.
+  --bookOutput dir                  Output directory for content files.
   -u, --username string             Gingko username.
   -p, --password string             Gingko password.
   --postProcessing                  Optional value that can be repeated for each post-processing step.
@@ -56,9 +60,11 @@ node gingko-to-markdown.js -t <treeId> -o <outputDirectory> -u <username> -p <pa
 If you want an example of the output it generates, you can check my repository [Building git](https://github.com/AlphaGit/building-git). It is generated with this command:
 
 ```console
-rm -rf ./output/*
+rm -rf ./output
 
-node gingko-to-markdown.js -t <myTreeId> -o ./output -u <myUserName> -p <myPassword> \
+node gingko-to-markdown.js -t <myTreeId> -u <myUserName> -p <myPassword> \
+  --rootOutput ./output \
+  --bookOutput ./output/book \
   --postProcessing=index-tags \
   --postProcessing=strip-tags \
   --postProcessing=gitbook-summary

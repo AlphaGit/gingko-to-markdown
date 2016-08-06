@@ -6,6 +6,7 @@ module.exports = indexTags;
 // depends on: ./determine-level-numbers to have run first
 
 var _ = require('lodash');
+var Q = require('q');
 var forEachTreeNode = require('./util/for-each-tree-node');
 var removeDiacritics = require('./util/remove-diacritics');
 var getNewItemLevelItemNumber = require('./util/get-new-item-level-item-number');
@@ -13,7 +14,7 @@ var generateMarkdownLinkForFileName = require('./util/generate-markdown-link-for
 
 var TAG_REGEX = /#[^\s#]+/g;
 
-function indexTags(documentTree/*, options*/) {
+function indexTags(documentTree, options) {
 	var index = {};
 
 	forEachTreeNode(documentTree, function(treeNode) {
@@ -31,15 +32,18 @@ function indexTags(documentTree/*, options*/) {
 	});
 
 	var newItemNumber = getNewItemLevelItemNumber(documentTree);
+	var indexFileName = options.bookOutput + '/' + newItemNumber + '-Index.markdown';
 
 	documentTree.push({
 		itemNumber: newItemNumber,
-		fileName: newItemNumber + '-Index.markdown',
-		content: generateIndexContent(index)
+		fileName: indexFileName,
+		content: generateIndexContent(index, indexFileName)
 	});
+
+	return Q();
 }
 
-function generateIndexContent(index) {
+function generateIndexContent(index, indexFileName) {
 	var contentString = '# Index\n\n';
 
 	var indexEntriesGrouped = _.groupBy(Object.keys(index), function(e) {
@@ -58,13 +62,13 @@ function generateIndexContent(index) {
 			var references = index[indexEntry];
 
 			if (references.length == 1) {
-				contentString += ': ' + generateMarkdownLinkForFileName(references[0]) + '\n';
+				contentString += ': ' + generateMarkdownLinkForFileName(references[0], indexFileName) + '\n';
 				return; // forEach
 			}
 
 			contentString += '\n';
 			references.forEach(function(reference) {
-				contentString += '    - ' + generateMarkdownLinkForFileName(reference) + '\n';
+				contentString += '    - ' + generateMarkdownLinkForFileName(reference, indexFileName) + '\n';
 			});
 		});
 		contentString += '\n';

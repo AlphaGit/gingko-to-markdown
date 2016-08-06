@@ -15,7 +15,7 @@ var processingSteps = require('./processing-steps');
 exportFromGingko()
 	.then(stringToJson)
 	.then(function(documentTree) {
-		processingSteps.processContent(documentTree, options);
+		return processingSteps.processContent(documentTree, options);
 	})
 	.then(function() {
 		console.log('Done!');
@@ -49,7 +49,7 @@ function ensureCommandLine() {
 
 function parseCommandLineArguments() {
 	ensureCommandLine();
-	return commandLine.parse();
+	return commandLine.parseAndSetDefaults();
 }
 
 function validateCommandLineArguments(options) {

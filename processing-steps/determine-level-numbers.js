@@ -5,6 +5,7 @@ module.exports = determineLevelNumbers;
 function determineLevelNumbers(documentTree, options) {
 	determineLevelNumbersForArray(documentTree, '', 0);
 };
+var Q = require('q');
 
 function determineLevelNumbersForArray(jsonObject, levelPrefix, nestingLevel) {
 	var levelItemNumber = 1;
@@ -13,6 +14,7 @@ function determineLevelNumbersForArray(jsonObject, levelPrefix, nestingLevel) {
 		determineLevelNumbersForObject(object, levelPrefix + levelItemNumber, nestingLevel);
 		levelItemNumber++;
 	}
+	return Q();
 }
 
 function determineLevelNumbersForObject(jsonObject, completeItemLevelNumber, nestingLevel) {

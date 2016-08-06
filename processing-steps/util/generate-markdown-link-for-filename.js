@@ -1,5 +1,10 @@
 'use strict';
 
-module.exports = function generateMarkdownLinkForFileName(fileName) {
-	return '[' + fileName.split('.markdown')[0] + '](' + fileName + ')';
+var path = require('path');
+
+module.exports = function generateMarkdownLinkForFileName(destFilePath, originFilePath) {
+	var linkName = path.basename(destFilePath, '.markdown');
+	var linkReference = path.relative(path.dirname(originFilePath), destFilePath);
+
+	return '[' + linkName + '](' + linkReference + ')';
 }

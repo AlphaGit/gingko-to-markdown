@@ -1,5 +1,5 @@
 module.exports = {
-	parse: parse,
+	parseAndSetDefaults: parseAndSetDefaults,
 	validate: validate,
 	showUsage: showUsage
 };
@@ -13,11 +13,15 @@ var cli = commandLineArguments([
 		type: String,
 		description: 'Gingko tree ID to export.'
 	}, {
-		name: 'outputDir',
-		alias: 'o',
+		name: 'bookOutput',
 		type: String,
 		typeLabel: 'dir',
 		description: 'Output directory for markdown files.'
+	}, {
+		name: 'rootOutput',
+		type: String,
+		typeLabel: 'dir',
+		description: 'Output directory the root content, like summaries and TOCs.'
 	}, {
 		name: 'username',
 		alias: 'u',
@@ -41,14 +45,18 @@ var cli = commandLineArguments([
 	}
 ]);
 
-function parse() {
-	return cli.parse();
+function parseAndSetDefaults() {
+	var commandLineArguments = cli.parse();
+	if (!commandLineArguments.bookOutput) {
+		commandLineArguments.bookOutput = commandLineArguments.rootOutput;
+	}
+	return commandLineArguments;
 }
 
 function validate(options) {
 	var errors = [];
 	if (!options.treeId) errors.push('--treeId or -t is required');
-	if (!options.outputDir) errors.push('--outputDir or -o is required');
+	if (!options.rootOutput) errors.push('--rootOutput is required');
 	if (!options.username) errors.push('--username or -u is required');
 	if (!options.password) errors.push('--password or -p is required');
 

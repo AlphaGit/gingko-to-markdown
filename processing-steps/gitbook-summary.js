@@ -5,19 +5,21 @@ module.exports = generateGitbookSummary;
 // depends on: ./determine-file-names to have run first
 // depends on: ./determine-level-numbers to have run first
 
+var Q = require('q');
 var forEachTreeNode = require('./util/for-each-tree-node');
 var getNewItemLevelItemNumber = require('./util/get-new-item-level-item-number');
 var generateMarkdownLinkForFileName = require('./util/generate-markdown-link-for-filename');
 
-function generateGitbookSummary(documentTree/*, options*/) {
+function generateGitbookSummary(documentTree, options) {
 	var summaryFileContents = "# Summary\n\n";
+  var summaryFileName = options.rootOutput + '/SUMMARY.md';
 
 	forEachTreeNode(documentTree, function(treeNode) {
 		if (!treeNode.content) return;
 
 		console.log('Adding content to GitBook summary from ' + treeNode.fileName);
 		var indentation = treeNode.nestingLevel * 4;
-		var markdownLink = generateMarkdownLinkForFileName(treeNode.fileName);
+		var markdownLink = generateMarkdownLinkForFileName(treeNode.fileName, summaryFileName);
 		summaryFileContents += ' '.repeat(indentation) + '* ' + markdownLink + '\n';
 	});
 
@@ -25,9 +27,11 @@ function generateGitbookSummary(documentTree/*, options*/) {
 
 	documentTree.push({
 		itemNumber: itemNumber,
-		fileName: 'SUMMARY.md',
+		fileName: summaryFileName,
 		content: summaryFileContents
 	});
+
+  return Q();
 }
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat
