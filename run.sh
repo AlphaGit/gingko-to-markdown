@@ -9,6 +9,6 @@ source loadCredentials.sh
 node gingko-to-markdown.js -t $TREE_ID -u $USERNAME -p $PASSWORD "$@" \
   --postProcessing=index-tags \
   --postProcessing=strip-tags \
-  --postProcessing=gitbook-summary \
+  --postProcessing=gitbook-metafiles \
   --rootOutput $OUTPUT_DIR \
   --bookOutput $OUTPUT_DIR/book

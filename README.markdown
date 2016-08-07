@@ -53,7 +53,7 @@ node gingko-to-markdown.js -t <treeId> \
                                     Order is respected and important.
                                     - "strip-tags" removes tags from the texts.
                                     - "index-tags" creates an index page linking to the corresponding files.
-                                    - "gitbook-summary" creates the required SUMMARY.md for GitBook publications.
+                                    - "gitbook-metafiles" creates the required files for GitBook publications.
   -h, --help                        Shows this help.
 ```
 

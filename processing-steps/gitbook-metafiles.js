@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = generateGitbookSummary;
+module.exports = generateGitbookMetadataFiles;
 
 // depends on: ./determine-file-names to have run first
 // depends on: ./determine-level-numbers to have run first
@@ -9,6 +9,48 @@ var Q = require('q');
 var forEachTreeNode = require('./util/for-each-tree-node');
 var getNewItemLevelItemNumber = require('./util/get-new-item-level-item-number');
 var generateMarkdownLinkForFileName = require('./util/generate-markdown-link-for-filename');
+
+var fs = require('fs');
+var qWriteFile = Q.nfbind(fs.writeFile);
+
+function generateGitbookMetadataFiles(documentTree, options) {
+  return Q.all([
+    generateGitbookSummary(documentTree, options),
+    generateGitbookBookJson(options),
+    generateGitbookReadme(documentTree, options)
+  ]);
+}
+
+function generateGitbookReadme(documentTree, options) {
+  //TODO pick a file to use as readme from the document tree, based on an option
+
+  //TODO abort search once first element was found
+  var firstElementContent = null;
+  forEachTreeNode(documentTree, function(node) {
+    if (!firstElementContent) {
+      firstElementContent = node.content;
+    }
+  });
+
+  console.log("Generating GitBook's README.md file");
+  return qWriteFile(options.rootOutput + '/README.md', firstElementContent);
+}
+
+function generateGitbookBookJson(options) {
+  var deferred = Q.defer();
+
+  var bookJsonLocation = options.bookJsonLocation || options.rootOutput;
+  var jsonOutput = {
+    title: options.bookTitle,
+    description: options.bookDescription,
+    author: options.bookAuthor,
+    language: options.bookLanguage,
+    direction: options.bookDirection
+  };
+
+  console.log("Generating GitBook's book.json file");
+  return qWriteFile(options.rootOutput + '/book.json', JSON.stringify(jsonOutput));
+}
 
 function generateGitbookSummary(documentTree, options) {
 	var summaryFileContents = "# Summary\n\n";
@@ -30,8 +72,6 @@ function generateGitbookSummary(documentTree, options) {
 		fileName: summaryFileName,
 		content: summaryFileContents
 	});
-
-  return Q();
 }
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat
